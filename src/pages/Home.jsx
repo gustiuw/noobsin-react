@@ -44,6 +44,15 @@ export default function Home({ mode }) {
 		fetchMovies(DEFAULT_QUERY);
 	}, []);
 
+	useEffect(() => {
+		if (!query.trim()) return;
+		const handler = setTimeout(() => {
+			fetchMovies(query);
+		}, 500);
+
+		return () => clearTimeout(handler);
+	}, [query]);
+
 	const handleSearch = () => {
 		const q = query.trim();
 		if (!q) return;
@@ -52,15 +61,15 @@ export default function Home({ mode }) {
 
 	return (
 		<div className="container py-4">
-			<div className="input-group mb-3">
+			<div className="input-group mb-3" aria-label="Movie search form">
 				<input
 					className="form-control"
-					placeholder="Cari judul film…"
+					placeholder="Search movie title"
+					aria-label="Search movie title"
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
-					onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-				/>
-				<button className={`btn ${mode === "dark" ? "btn-light" : "btn-dark"}`} onClick={handleSearch}>
+					onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
+				<button className={`btn ${mode === "dark" ? "btn-light" : "btn-dark"}`} aria-label="Search movies" onClick={handleSearch}>
 					Search
 				</button>
 			</div>
@@ -72,14 +81,13 @@ export default function Home({ mode }) {
 
 
 			{!loading && !err && movies.length > 0 && (
-				// <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
-				<div className="grid">
-				{movies.map((m) => (
+				<section className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3" aria-label="Movie list">
+					{movies.map((m) => (
 						<div className="col" key={m.imdbID}>
 							<MovieCard movie={m} />
 						</div>
 					))}
-				</div>
+				</section>
 			)}
 		</div>
 	);
