@@ -1,12 +1,12 @@
 // src/App.jsx
 import { useState, useEffect } from "react";
+import { NavLink, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Favourites from "./pages/Favourites";
 import { ToastContainer } from "react-toastify";
 
 export default function App() {
-  const [page, setPage] = useState("home");
-  const[mode, setMode] = useState("light")
+  const [mode, setMode] = useState("light");
 
   useEffect(() => {
     document.documentElement.setAttribute("data-bs-theme", mode);
@@ -30,25 +30,30 @@ export default function App() {
       {/* Nav tabs */}
       <ul className="nav nav-tabs mb-4">
         <li className="nav-item">
-          <button
-            className={`nav-link ${page === "home" ? "active" : ""}`}
-            onClick={() => setPage("home")}
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
           >
             Home
-          </button>
+          </NavLink>
         </li>
         <li className="nav-item">
-          <button
-            className={`nav-link ${page === "favourites" ? "active" : ""}`}
-            onClick={() => setPage("favourites")}
+          <NavLink
+            to="/favourites"
+            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
           >
             Favourites
-          </button>
+          </NavLink>
         </li>
       </ul>
 
-      {page === "home" && <Home mode={mode} />}
-      {page === "favourites" && <Favourites mode={mode} />}
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<Home mode={mode} />} />
+        <Route path="/favourites" element={<Favourites mode={mode} />} />
+      </Routes>
+
       <ToastContainer position="bottom-right" autoClose={2000} />
     </div>
   );
