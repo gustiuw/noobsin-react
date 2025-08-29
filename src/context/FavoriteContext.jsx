@@ -17,13 +17,14 @@ export function FavProvider({ children }) {
   }, [favs]);
 
   const addFav = (movie) => {
-    if (!favs.find((m) => m.imdbID === movie.imdbID)) {
-      setFavs([...favs, movie]);
-    }
+    setFavs((prev) => {
+      if (prev.some((m) => m.imdbID === movie.imdbID)) return prev; // sudah ada
+      return [...prev, movie];
+    });
   };
 
   const unfav = (id) => {
-    setFavs(favs.filter((m) => m.imdbID !== id));
+    setFavs((prev) => prev.filter((m) => m.imdbID !== id));
   };
 
   return (

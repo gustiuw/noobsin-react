@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Favourites from "./pages/Favourites";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const [page, setPage] = useState("home");
@@ -48,6 +49,7 @@ export default function App() {
 
       {page === "home" && <Home mode={mode} />}
       {page === "favourites" && <Favourites mode={mode} />}
+      <ToastContainer position="bottom-right" autoClose={2000} />
     </div>
   );
 }
